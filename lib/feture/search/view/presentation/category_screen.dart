@@ -5,6 +5,7 @@ import 'package:app/feture/search/data/11.dart';
 import 'package:app/feture/search/view/presentation/custom_category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 class CategoryScreen extends StatefulWidget {
@@ -176,7 +177,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               SizedBox(height: 20.h),
               if (apiResponse != null) _buildResponseWidget(),
               SizedBox(height: 20.h),
-              _buildCategoriesGrid(),
+              CustomGridViewBuilder(),
             ],
           ),
         ),
@@ -330,39 +331,82 @@ class _CategoryScreenState extends State<CategoryScreen> {
       ),
     );
   }
+}
 
-  Widget _buildCategoriesGrid() {
-    final categories = [
-      _CategoryData('الرياضة', 'assets/images/restaurant.svg'),
-      _CategoryData('تسوق', 'assets/images/restaurant.svg'),
-      _CategoryData('مطاعم', 'assets/images/restaurant.svg'),
-      _CategoryData('ترفيه', 'assets/images/fixIcon.svg'),
+class CustomGridViewBuilder extends StatelessWidget {
+  const CustomGridViewBuilder({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    List<String> images = [
+      'assets/images/sepaka.svg',
+      'assets/images/negara.svg',
+      'assets/images/kahraba.svg', // Fixed order to match titles
+      'assets/images/a3mal_yadawea.svg',
     ];
+    List<String> titles = ['سباكة', 'نجارة', 'كهرباء', 'أعمال يدوية'];
 
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
+      itemCount: images.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 16.w,
         mainAxisSpacing: 16.h,
+        childAspectRatio: 1,
       ),
-      itemCount: categories.length,
       itemBuilder: (context, index) {
-        final category = categories[index];
-        return CategoryCard(
-          imageUrl: category.imageUrl,
-          title: category.title,
-          onTap: () => context.pushNamed(Routs.serviceView),
+        return CustomCategoryContainer(
+          image: images[index],
+          title: titles[index],
+          onTap: () {
+            context.pushNamed(Routs.serviceView);
+          },
         );
       },
     );
   }
 }
 
-class _CategoryData {
-  final String title;
-  final String imageUrl;
+class CustomCategoryContainer extends StatelessWidget {
+  const CustomCategoryContainer({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.onTap,
+  });
+  final String image, title;
+  final void Function()? onTap;
 
-  _CategoryData(this.title, this.imageUrl);
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 163.w,
+        height: 163.h,
+        decoration: BoxDecoration(
+          color: Color(0xFFFFFFFF),
+          border: Border.all(color: Colors.grey.shade200),
+          borderRadius: BorderRadius.circular(32),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(image),
+            SizedBox(height: 16),
+            Text(
+              title,
+              style: TextStyle(
+                color: Color(0xFF000000),
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
