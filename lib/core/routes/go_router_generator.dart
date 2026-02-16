@@ -3,10 +3,11 @@ import 'package:app/feture/auth/login/presentation/login_screen.dart';
 import 'package:app/feture/auth/login/presentation/pre_login_screen.dart';
 import 'package:app/feture/auth/register/view/presentation/register_screen.dart';
 import 'package:app/feture/main/view/presentation/home_screen.dart';
+import 'package:app/feture/main/view/presentation/notifications_screen.dart';
+import 'package:app/feture/main/view/presentation/settings_screen.dart';
 import 'package:app/feture/search/view/presentation/category_screen.dart';
 import 'package:app/feture/sevice_view/view/presentation/service_view.dart';
 import 'package:app/feture/splash/view/presentation/splash_screen.dart';
-import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 
 class RoutConfig {
@@ -47,7 +48,23 @@ class RoutConfig {
       GoRoute(
         path: Routs.serviceView,
         name: Routs.serviceView,
-        builder: (context, state) => const ServiceView(),
+        builder: (context, state) {
+          // هنا نستقبل البيانات المرسلة (اسم القسم)
+          // نستخدم "as String" لأننا متأكدين أننا سنرسل نصاً
+          final category = state.extra as String;
+
+          return ServiceView(categoryName: category);
+        },
+      ),
+      GoRoute(
+        path: Routs.notifications,
+        name: Routs.notifications,
+        builder: (context, state) => const NotificationsScreen(),
+      ),
+      GoRoute(
+        path: Routs.settings,
+        name: Routs.settings,
+        builder: (context, state) => const SettingsScreen(),
       ),
     ],
   );

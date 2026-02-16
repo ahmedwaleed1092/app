@@ -8,7 +8,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  final String? selectedRole;
+
+  const LoginScreen({super.key, this.selectedRole});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -17,7 +19,12 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool? isRemumberd = false;
 
+  bool get isBuyer => widget.selectedRole == 'مشتري';
+  bool get isServiceProvider => widget.selectedRole == 'مقدم خدمة';
+
   @override
+  /*************  ✨ Windsurf Command ⭐  *************/
+  /*******  15bbfbb9-64d4-4b11-b15a-b91feaad000e  *******/
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('تسجيل الدخول'), centerTitle: true),

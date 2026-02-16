@@ -13,4 +13,6 @@ class Routs {
   static const String checkout = '/checkout';
   static const String forgetPassword = '/forgetPassword';
   static const String serviceView = '/serviceView';
+  static const String notifications = '/notifications';
+  static const String settings = '/settings';
 }

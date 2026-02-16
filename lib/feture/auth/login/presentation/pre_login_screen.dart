@@ -6,8 +6,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-class PreLoginScreen extends StatelessWidget {
+class PreLoginScreen extends StatefulWidget {
   const PreLoginScreen({super.key});
+
+  @override
+  State<PreLoginScreen> createState() => _PreLoginScreenState();
+}
+
+class _PreLoginScreenState extends State<PreLoginScreen> {
+  String role1 = 'مقدم خدمة';
+  String role2 = 'مشتري';
+  String? selectedRole;
 
   @override
   Widget build(BuildContext context) {
@@ -36,42 +45,137 @@ class PreLoginScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                // Service Provider Button
                 InkWell(
-                  onTap: () {},
-                  child: CircleAvatar(
-                    maxRadius: 80.r,
-
-                    child: SvgPicture.asset(
-                      "assets/images/servece.svg",
-                      width: 100.w,
-                      height: 100.h,
-                    ),
+                  onTap: () {
+                    setState(() {
+                      selectedRole = role1;
+                    });
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: selectedRole == role1
+                                ? Theme.of(context).colorScheme.primary
+                                : Colors.transparent,
+                            width: 3,
+                          ),
+                        ),
+                        child: CircleAvatar(
+                          maxRadius: 80.r,
+                          child: SvgPicture.asset(
+                            "assets/images/servece.svg",
+                            width: 100.w,
+                            height: 100.h,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      Text(
+                        role1,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: selectedRole == role1
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                          color: selectedRole == role1
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                // Buyer Button
                 InkWell(
-                  onTap: () {},
-                  child: CircleAvatar(
-                    maxRadius: 80.r,
-
-                    child: Image.asset(
-                      "assets/images/Group.png",
-                      width: 100.w,
-                      height: 100.h,
-                    ),
+                  onTap: () {
+                    setState(() {
+                      selectedRole = role2;
+                    });
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: selectedRole == role2
+                                ? Theme.of(context).colorScheme.primary
+                                : Colors.transparent,
+                            width: 3,
+                          ),
+                        ),
+                        child: CircleAvatar(
+                          maxRadius: 80.r,
+                          child: Image.asset(
+                            "assets/images/Group.png",
+                            width: 100.w,
+                            height: 100.h,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      Text(
+                        role2,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: selectedRole == role2
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                          color: selectedRole == role2
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
             SizedBox(height: 50.h),
+            selectedRole != null
+                ? Center(
+                    child: Text(
+                      'تم اختيار: $selectedRole',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  )
+                : Center(
+                    child: Text(
+                      'يرجى اختيار دور',
+                      style: TextStyle(fontSize: 14.sp, color: Colors.grey),
+                    ),
+                  ),
+            SizedBox(height: 50.h),
+
             MainElevatedButton(
               textOnButton: "التالي",
               textColor: Colors.white,
               width: 450.w,
               height: 50.h,
-
-              onButtonTap: () {
-                GoRouter.of(context).pushNamed(Routs.login);
-              },
+              onButtonTap: selectedRole != null
+                  ? () {
+                      if (selectedRole == role1) {
+                        context.pushNamed(Routs.login);
+                      } else if (selectedRole == role2) {
+                        context.go(Routs.category);
+                      }
+                    }
+                  : () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('يرجى اختيار دور أولاً'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    },
             ),
           ],
         ),

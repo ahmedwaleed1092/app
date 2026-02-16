@@ -1,10 +1,12 @@
+import 'package:app/core/apis/api_functions.dart';
 import 'package:app/core/routes/go_router_generator.dart';
-import 'package:app/feture/auth/login/presentation/login_screen.dart';
 import 'package:app/feture/splash/view/presentation/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  DioHelper.init(); // <--- مهم جداً
   runApp(const MyApp());
 }
 

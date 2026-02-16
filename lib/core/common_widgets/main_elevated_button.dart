@@ -10,6 +10,7 @@ class MainElevatedButton extends StatelessWidget {
   final double? height;
   final double? borderRadius;
   final Color? textColor;
+  final Color? backgroundColor;
 
   const MainElevatedButton({
     super.key,
@@ -21,6 +22,7 @@ class MainElevatedButton extends StatelessWidget {
     this.height,
     this.borderRadius,
     this.textColor,
+    this.backgroundColor = const Color(0xff0064AF),
   });
 
   @override
@@ -29,7 +31,7 @@ class MainElevatedButton extends StatelessWidget {
       onPressed: onButtonTap as Function()?,
 
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xff0064AF),
+        backgroundColor: backgroundColor,
 
         minimumSize: Size(width ?? 212.w, height ?? 43.h),
         shape: RoundedRectangleBorder(
